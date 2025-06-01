@@ -1,0 +1,101 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  ci_step:
+    name: Build dockerfile image and push to ghcr.io
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - 
+        name: Check out the source repo
+        uses: actions/checkout@v4
+      
+      -
+        name: Docker metadata setup
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ vars.GHCR_USERNAME }}/zad2-pawcho
+          flavor: latest=false
+          tags: |
+            type=sha,priority=100,prefix=sha-,format=short
+            type=semver,priority=200,pattern={{version}}   
+
+      - 
+        name: Qemu setup
+        uses: docker/setup-qemu-action@v3
+
+      - 
+        name: Buildx set-up
+        uses: docker/setup-buildx-action@v3
+
+      - 
+        name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      -
+        name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      -
+        name: Build and export to Docker
+        uses: docker/build-push-action@v6
+        with:
+          load: true
+          context: ./src
+          file: ./src/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          cache-from: |
+            type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache 
+          #cache-to: |
+            #type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache  
+          cache-to: |
+            type=local,src=/docker-cache/,mode=max
+          tags: temp_docker_image
+
+        -
+          name: Run Trivy vulnerability scanner
+          uses: aquasecurity/trivy-action@0.28.0
+          with:
+            image-ref: temp_docker_image
+            format: 'table'
+            exit-code: '1'
+            ignore-unfixed: true
+            vuln-type: 'os,library'
+            severity: 'CRITICAL,HIGH'
+
+      - 
+        name: Build and export to Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./src
+          file: ./src/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          #cache-from: |
+            #type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache 
+          cache-from: |
+            type=local,src=/docker-cache/
+          cache-to: |
+            type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache,mode=max
+          tags: ${{ steps.meta.outputs.tags }}
+
