@@ -84,7 +84,7 @@ jobs:
 
       -
         name: Run
-        run: docker run -it -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image temp_docker_image
+        run: docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image temp_docker_image
 
       -
         name: Run Trivy vulnerability scanner
