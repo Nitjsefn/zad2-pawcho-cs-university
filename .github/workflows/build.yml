@@ -50,7 +50,7 @@ jobs:
 
       -
         name: Log in to the Container registry
-        uses: docker/login-action
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -70,16 +70,16 @@ jobs:
             type=local,src='/docker-cache/',mode=max
           tags: temp_docker_image
 
-        -
-          name: Run Trivy vulnerability scanner
-          uses: aquasecurity/trivy-action@0.28.0
-          with:
-            image-ref: temp_docker_image
-            format: 'table'
-            exit-code: '1'
-            ignore-unfixed: true
-            vuln-type: 'os,library'
-            severity: 'CRITICAL,HIGH'
+      -
+        name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: temp_docker_image
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
 
       -
         name: Build and export to Docker image
