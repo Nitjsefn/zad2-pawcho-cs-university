@@ -40,10 +40,6 @@ jobs:
       -
         name: Buildx set-up
         uses: docker/setup-buildx-action@v3
-
-      -
-        name: Manual Login to dockerhub
-        run: echo Hello world
         
       -
         name: Login to DockerHub
