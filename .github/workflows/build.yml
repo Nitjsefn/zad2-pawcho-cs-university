@@ -66,8 +66,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: |
             type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache 
-          #cache-to: |
-            #type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache  
           cache-to: |
             type=local,src=/docker-cache/,mode=max
           tags: temp_docker_image
@@ -91,8 +89,6 @@ jobs:
           file: ./src/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          #cache-from: |
-            #type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache 
           cache-from: |
             type=local,src=/docker-cache/
           cache-to: |
