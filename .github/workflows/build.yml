@@ -43,7 +43,7 @@ jobs:
 
       -
         name: Manual Login to dockerhub
-        run: echo ${{ vars.DOCKERHUB_USERNAME }}
+        run: echo Hello world
         
       -
         name: Login to DockerHub
