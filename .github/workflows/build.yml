@@ -83,6 +83,10 @@ jobs:
           tags: temp_docker_image
 
       -
+        name: Run
+        run: docker run -it -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image temp_docker_image
+
+      -
         name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
