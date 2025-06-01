@@ -67,7 +67,7 @@ jobs:
           cache-from: |
             type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache
           cache-to: |
-            type=local,src='/docker-cache/',mode=max
+            type=local,dest='/docker-cache/',mode=max
           tags: temp_docker_image
 
       -
