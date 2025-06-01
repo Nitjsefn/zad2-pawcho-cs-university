@@ -64,7 +64,6 @@ jobs:
           load: true
           context: ./src
           file: ./src/Dockerfile
-          platforms: linux/amd64,linux/arm64
           cache-from: |
             type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache
           cache-to: |
