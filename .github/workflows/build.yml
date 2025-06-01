@@ -84,7 +84,7 @@ jobs:
 
       -
         name: Run
-        run: docker images
+        run: docker image inspect temp_docker_image
 
       -
         name: Run Trivy vulnerability scanner
