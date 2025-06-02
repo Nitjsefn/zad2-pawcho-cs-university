@@ -37,17 +37,6 @@ jobs:
         name: Qemu setup
         uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v4
-        with:
-          daemon-config: |
-            {
-              "debug": true,
-              "features": {
-                "containerd-snapshotter": true
-              }
-            }
-
       -
         name: Buildx set-up
         uses: docker/setup-buildx-action@v3
@@ -92,6 +81,17 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
+        with:
+          daemon-config: |
+            {
+              "debug": true,
+              "features": {
+                "containerd-snapshotter": true
+              }
+            }
 
       -
         name: Build and export to Docker image
