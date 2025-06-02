@@ -1,7 +1,5 @@
 # Sprawozdanie
 
-==
-
 ## Krótki opis wykonania zadania:
 
 ### Konfiguracja
@@ -28,8 +26,6 @@ danych cache, natomiast tym razem zapisując je do registry. Obraz natomiast jes
 zapisywany w ghcr.io.
 Na koniec wykonywany jest manifest provenance na podstawie budowy poprzednich
 obrazów.
-
-==
 
 ## Przyjęty sposób tagowania
 Automat GH Actions otagowuje obraz na trzy sposoby:
