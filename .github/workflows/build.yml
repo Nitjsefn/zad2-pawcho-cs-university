@@ -105,7 +105,5 @@ jobs:
             type=local,src=/docker-cache/
           cache-to: |
             type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/zad2-pawcho-cache:cache,mode=max
-          tags:
-            - ${{ steps.meta.outputs.tags }}
-            - ghcr.io/${{ github.repository }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
 
