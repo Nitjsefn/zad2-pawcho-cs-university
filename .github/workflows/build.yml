@@ -27,7 +27,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ vars.GHCR_USERNAME }}/zad2-pawcho
+          images: ghcr.io/${{ github.repository }}
           flavor: latest=false
           tags: |
             type=sha,priority=100,prefix=sha-,format=short
